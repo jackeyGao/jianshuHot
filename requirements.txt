@@ -1,0 +1,4 @@
+html2text==2015.11.4
+peewee==2.7.4
+requests==2.9.1
+Scrapy==1.0.4
