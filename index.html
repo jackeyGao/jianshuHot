@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jianshuhot by jackeyGao</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/jackeyGao/jianshuHot">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/jackeyGao/jianshuHot/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/jackeyGao/jianshuHot/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Jianshuhot</h1>
+          <p>Scrapy抓取简书热门生成电子书发送到Kindle</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/jackeyGao">jackeyGao</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a id="jianshuhot" class="anchor" href="#jianshuhot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>jianshuHot</h1>
+
+<p>Scrapy抓取简书热门生成电子书发送到Kindle</p>
+
+<p><a href="http://www.jianshu.com">简书</a>是个学习的好网站， 我大多只关注首页上的人们文章， 但是最近因为忙错过了很多首页上的文章，所以有了想法把每天的热门top生成mobi推送到kindle。这样在地铁上也能快速翻完.</p>
+
+<p>环境准备:</p>
+
+<ul>
+<li>一台主机(需要联网)</li>
+<li>Gitbook</li>
+<li>calibre(Gitbook 依赖calibre的<code>ebook-convert</code>)</li>
+<li>Python2.7.9(calibre 需要<code>python2.7.9</code>)</li>
+<li>项目地址:  <strong><a href="https://github.com/jackeyGao/jianshuHot">jianshuHot</a></strong>
+</li>
+</ul>
+
+<h2>
+<a id="关于calibre安装" class="anchor" href="#%E5%85%B3%E4%BA%8Ecalibre%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>关于calibre安装</h2>
+
+<div class="highlight highlight-source-shell"><pre>sudo -v <span class="pl-k">&amp;&amp;</span> wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py <span class="pl-k">|</span> sudo python -c <span class="pl-s"><span class="pl-pds">"</span>import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()<span class="pl-pds">"</span></span></pre></div>
+
+<p>官网文档提供的安装脚本看似简单， 执行之后也可以安装使用了， 但是gitbook调用<code>ebook-convert</code>时候会报错， 这个地方报错应该是QT的错误(至少我遇到的是, 具体错误信息忘记截图了)如果遇到此错误直接安装QT pyQT即可. <a href="http://calibre-ebook.com/download_linux">calibre 安装页面</a>有依赖表</p>
+
+<h2>
+<a id="gitbook-安装" class="anchor" href="#gitbook-%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gitbook 安装</h2>
+
+<p>需要安装<code>nodejs</code>和<code>npm</code>然后执行<code>npm install -g gitbook-cli</code></p>
+
+<h2>
+<a id="安装jianshuhot" class="anchor" href="#%E5%AE%89%E8%A3%85jianshuhot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>安装jianshuHot</h2>
+
+<p>需要强调的是此部分需要解决大量的依赖,</p>
+
+<p><strong><code>scrapy</code></strong>所依赖的python包很多， 而且这些依赖的python大多需要一些系统库， 必要的时候需要<code>apt-get</code>、<code>yum</code>安装一下, 如<code>python-devel</code> <code>libffi-devel</code> <code>libxml-devel</code>等....</p>
+
+<p><strong><code>peewee</code></strong> (数据库ORM)要<code>mysql-devel</code>， 以上举例都是已知的， 这是在我部署之后写的， 部署的过程没有详细记录， 现在只能靠回忆来写本章节.</p>
+
+<div class="highlight highlight-source-shell"><pre>$ git clone https://github.com/jackeyGao/jianshuHot
+$ <span class="pl-c1">cd</span> jianshuHot
+$ pip install -r requirements.txt</pre></div>
+
+<h2>
+<a id="初始化程序" class="anchor" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%A8%8B%E5%BA%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>初始化程序</h2>
+
+<div class="highlight highlight-source-shell"><pre>$ sh init.sh</pre></div>
+
+<h2>
+<a id="邮件配置" class="anchor" href="#%E9%82%AE%E4%BB%B6%E9%85%8D%E7%BD%AE" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>邮件配置</h2>
+
+<p>这里发送邮件使用的<a href="http://caspian.dotconf.net/menu/Software/SendEmail/">sendEmail</a>, <a href="http://caspian.dotconf.net/menu/Software/SendEmail/">下载地址</a> . 解压后把解压的<code>sendEmail</code>重命名到<code>/usr/local/bin/sendEmail</code>理论上都能安装成功， 这个是免编译的， 只需要机器上安装了<code>perl</code></p>
+
+<p>然后修改start.sh 邮箱配置， 写成你自己163邮箱， 也可以用其他品牌邮箱， 如果你用其他品牌别忘了改下<code>smtp.163.com</code>, 改成相应的smtp服务器即可.</p>
+
+<p><strong>注意:</strong> 无论你用哪个邮箱都必须把此邮箱账号加入亚马逊<strong><code>已认可的发件人电子邮箱列表</code></strong>， 确保发送的文档能到达亚马逊Cloud</p>
+
+<div class="highlight highlight-source-shell"><pre>$ vim start.sh
+....
+YOURKINDLE_MAIL_ADDRESS=<span class="pl-s"><span class="pl-pds">"</span>xxxxx@kindle.cn<span class="pl-pds">"</span></span>
+YOUR_SEND_MAIL_USERNAME=<span class="pl-s"><span class="pl-pds">"</span>xxxx@163.com<span class="pl-pds">"</span></span>
+YOUR_SEND_MAIL_SECRET = <span class="pl-s"><span class="pl-pds">'</span>xxxxxxxxxxxx<span class="pl-pds">'</span></span>
+MOBI_BOOK_PATH=<span class="pl-s"><span class="pl-pds">'</span>./output/book.mobi<span class="pl-pds">'</span></span>
+...</pre></div>
+
+<h2>
+<a id="开始抓取生成" class="anchor" href="#%E5%BC%80%E5%A7%8B%E6%8A%93%E5%8F%96%E7%94%9F%E6%88%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>开始抓取生成</h2>
+
+<div class="highlight highlight-source-shell"><pre>$ sh start.sh</pre></div>
+
+<p>执行后会自动抓取页面生成markdown， 下载每个文章的图片， 然后gitbook通过markdown生成此次文档列表的<code>book.mobi</code> (output/book.mobi), 在start.sh 最后面有个备份的操作， 会把此次的mobi备份到<code>output/books</code>. 然后发送到指定的kindle地址邮箱.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
