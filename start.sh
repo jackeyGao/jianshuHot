@@ -38,9 +38,11 @@ cp output/book.mobi output/books/jianshu_hot-latest.mobi
 echo "完成"
 
 
+## 自定义邮箱服务器
 YOURKINDLE_MAIL_ADDRESS="xxxxx@kindle.cn"
 YOUR_SEND_MAIL_USERNAME="xxxx@163.com"
 YOUR_SEND_MAIL_SECRET = 'xxxxxxxxxxxx'
-MOBI_BOOK_PATH='./output/book.mobi'
+MOBI_BOOK_PATH='./output/jianshu_hot-latest.mobi'
 
+## 定义sendemail命令地址
 /usr/local/bin/sendEmail -s smtp.163.com -t $YOURKINDLE_MAIL_ADDRESS -u "简书热门$(date "+%Y%m%d")" -m "简书热门$(date "+%Y%m%d")" -xu $YOUR_SEND_MAIL_USERNAME -xp $YOUR_SEND_MAIL_SECRET -f $YOUR_SEND_MAIL_USERNAME -a $MOBI_BOOK_PATH
